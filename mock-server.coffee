@@ -7,7 +7,7 @@ net.createServer((sock) ->
   address = sock.remoteAddress
   console.log "CONNECTED: #{address}"
   interv = setInterval(() ->
-    sock.write JSON.stringify({"corners":[0,0,0,0],"f0":[5888,2575,108],"f1":[3375,2694,-1],"f2":[0,0,0],"f3":[0,0,0],"f4":[0,0,0]}) + '\n'
+    sock.write JSON.stringify({"corners":[0,0,0,0],"touched":[1,0,0,1,0],"f0":[5888,2575,108],"f1":[3375,2694,-1],"f2":[0,0,0],"f3":[0,0,0],"f4":[0,0,0]}) + '\n'
   , 100)
   sock.on('close', (data) ->
     console.log "DISCONNECTED: #{address}"

@@ -9,11 +9,12 @@ namespace DeserializeJSONFromNetwork
 {
     class SensorData
     {
-        public double[] corners;
-        public double[] f0;
-        public double[] f1;
-        public double[] f2;
-        public double[] f3;
+        public double[] corners; // length 5: fingers 0-4
+        public bool[] touched; // length 5: fingers 0-4
+        public double[] f0; // length 3: coordinates x,y,z
+        public double[] f1; // length 3: coordinates x,y,z
+        public double[] f2; // length 3: coordinates x,y,z
+        public double[] f3; // length 3: coordinates x,y,z
     }
     class Program
     {
