@@ -9,7 +9,7 @@ namespace DeserializeJSONFromNetwork
 {
     class SensorData
     {
-        public double[] corners; // length 5: fingers 0-4
+        public double[] corners; // length 4: corners 0-3
         public bool[] touched; // length 5: fingers 0-4
         public double[] f0; // length 3: coordinates x,y,z
         public double[] f1; // length 3: coordinates x,y,z
@@ -27,6 +27,8 @@ namespace DeserializeJSONFromNetwork
                 string data = reader.ReadLine();
                 //Console.WriteLine(data);
                 SensorData sensor = Newtonsoft.Json.JsonConvert.DeserializeObject<SensorData>(data);
+                Console.WriteLine(sensor.touched[0]);
+                Console.WriteLine(sensor.touched[1]);
                 Console.WriteLine(sensor.corners[0]);
                 Console.WriteLine(sensor.f0[0]);
                 Console.WriteLine(sensor.f1[0]);
