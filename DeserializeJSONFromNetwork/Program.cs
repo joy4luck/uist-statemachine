@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Net;
 using System.Net.Sockets;
 using System.IO;
 
@@ -15,23 +16,38 @@ namespace DeserializeJSONFromNetwork
         public double[] f1; // length 3: coordinates x,y,z
         public double[] f2; // length 3: coordinates x,y,z
         public double[] f3; // length 3: coordinates x,y,z
+
+        public override string ToString()
+        {
+            List<string> output = new List<string>();
+            output.Add("corners: ");
+            output.Add(corners.PrintArray());
+            output.Add(touched.PrintArray());
+            output.Add(f0.PrintArray());
+            output.Add(f1.PrintArray());
+            output.Add(f2.PrintArray());
+            output.Add(f3.PrintArray());
+            StringBuilder outstring = new StringBuilder();
+            outstring.Append("{");
+            outstring.Append(String.Join(",", String.Join(",", output)));
+            outstring.Append("}");
+            return outstring.ToString();
+        }
     }
     class Program
     {
         static void Main(string[] args)
         {
-            TcpClient client = new TcpClient("transgame.csail.mit.edu", 1101);
+            WebClient webClient = new WebClient();
+            string IPaddress = webClient.DownloadString("http://transgame.csail.mit.edu:9537/?varname=jedeyeserver");
+            TcpClient client = new TcpClient(IPaddress, 1101);
             TextReader reader = new StreamReader(client.GetStream());
             while (true)
             {
                 string data = reader.ReadLine();
                 //Console.WriteLine(data);
                 SensorData sensor = Newtonsoft.Json.JsonConvert.DeserializeObject<SensorData>(data);
-                Console.WriteLine(sensor.touched[0]);
-                Console.WriteLine(sensor.touched[1]);
-                Console.WriteLine(sensor.corners[0]);
-                Console.WriteLine(sensor.f0[0]);
-                Console.WriteLine(sensor.f1[0]);
+                Console.WriteLine(sensor);
             }
         }
     }
