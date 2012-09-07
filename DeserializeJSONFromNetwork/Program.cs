@@ -33,6 +33,35 @@ namespace DeserializeJSONFromNetwork
             outstring.Append("}");
             return outstring.ToString();
         }
+
+        /* Counts how many of the first fingers are currently touching.
+         */
+        public int FingerCount()
+        {
+            int c = 0;
+            for (int i = 0; i < 5; i++)
+            {
+                if (touched[i])
+                {
+                    c++;
+                }
+                else
+                {
+                    return c;
+                }
+            }
+            return c;
+        }
+
+        /* Returns the distance, in touchpad pixels, between two fingers currently touching.
+         * 
+         */
+        public double Distance()
+        {
+            double dx = f0[0] - f1[0];
+            double dy = f0[1] - f1[1];
+            return System.Math.Sqrt(dx * dx + dy * dy);
+        }
     }
     class Program
     {
@@ -42,12 +71,17 @@ namespace DeserializeJSONFromNetwork
             string IPaddress = webClient.DownloadString("http://transgame.csail.mit.edu:9537/?varname=jedeyeserver");
             TcpClient client = new TcpClient(IPaddress, 1101);
             TextReader reader = new StreamReader(client.GetStream());
+            DrawClass dc = new DrawClass();
             while (true)
             {
                 string data = reader.ReadLine();
                 //Console.WriteLine(data);
                 SensorData sensor = Newtonsoft.Json.JsonConvert.DeserializeObject<SensorData>(data);
-                Console.WriteLine(sensor);
+                dc.HandleSensorData(sensor);
+                Console.WriteLine(dc.state);
+                //dc.UpdatePlot(sensor);
+                //Console.WriteLine(dc.ToString());
+                //Console.WriteLine(sensor);
             }
         }
     }
